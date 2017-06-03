@@ -1,5 +1,5 @@
 import a_star
-from itertools import
+from itertools import cycle
 import math
 
 class Spaces(object):
@@ -12,32 +12,30 @@ class Spaces(object):
     @staticmethod
     def make_start(number_of_frogs_and_toads):
         # We have this number of frogs and toads, so we multiply the given number
-        number_of_spaces = number_of_frogs_and_toads*2
-        space_list = []
+        number_of_spaces = number_of_frogs_and_toads*2+1
+        space_list = ["_" for i in xrange(number_of_spaces)]
+
         if space_list:
             for space_idx in xrange(number_of_spaces):
                 if (space_idx < (math.floor(number_of_spaces/2))):
-                    space_list.append("F")
-                elif (space_idx == math.floor(number_of_spaces/2)):
-                    space_list.append("_")
-                else:
-                    space_list.append("T")
+                    space_list[space_idx] = ("T")
+                elif (space_idx > math.floor(number_of_spaces/2)):
+                    space_list[space_idx] = ("F")
 
         return Spaces(space_list)
 
     @staticmethod
     def make_goal(number_of_frogs_and_toads):
         # We have this number of frogs and toads, so we multiply the given number, and add one for the empty space.
-        number_of_spaces = number_of_frogs_and_toads*2
-        space_list = []
+        number_of_spaces = number_of_frogs_and_toads*2+1
+        space_list = ["_" for i in xrange(number_of_spaces)]
+
         if space_list:
             for space_idx in xrange(number_of_spaces):
                 if (space_idx < math.floor(number_of_spaces/2)):
-                    space_list.append("T")
-                elif (space_idx == math.floor(number_of_spaces/2)):
-                    space_list.append("_")
-                else:
-                    space_list.append("F")
+                    space_list[space_idx] = ("F")
+                elif (space_idx > math.floor(number_of_spaces/2)):
+                    space_list[space_idx] = ("T")
 
         return Spaces(space_list)
 
@@ -62,7 +60,7 @@ class Spaces(object):
 
     #TODO: reimplement depth.
     def depth(self, index):
-        return len(self.stacks[index])
+        return len(self.spaces[index])
 
     def move(self, from_index, to_index):
         new_spaces = self.copy()
@@ -76,12 +74,11 @@ class Spaces(object):
 
         return Spaces(new_spaces)
 
-    #TODO: decide if we need all these functions.
     def __unicode__(self):
-        return 'Stacks(%s)' % repr(self.spaces)
+        return repr(self.spaces)
 
     def __repr__(self):
-        return 'Stacks(%s)' % repr(self.spaces)
+        return repr(self.spaces)
 
     def __hash__(self):
         return hash(repr(self))
@@ -112,17 +109,20 @@ class FrogsAndToadsProblem(a_star.Problem):
         score = 0
         for idx, space in enumerate(self.spaces):
             if (idx <= math.floor(number_of_spaces/2) and space == "T"):
-                score++
+                score += 1
             elif (idx == math.floor(number_of_spaces/2) and space != "_"):
-                score++
+                score += 1
             elif (idx > math.floor(number_of_spaces/2) and space == "F"):
-                score++
+                score += 1
 
         return score
 
 if __name__ == '__main__':
-    frogs_and_toads = FrogsAndToadsProblem(number_of_frogs_and_toads)
-    print(frogs_and_toads)
+    number_of_frogs_and_toads = 2
+    # frogs_and_toads = FrogsAndToadsProblem(number_of_frogs_and_toads)
+    start = Spaces.make_start(number_of_frogs_and_toads)
+    goal = Spaces.make_goal(number_of_frogs_and_toads)
+    print(start, goal)
     # import sys
     # # if len(sys.args) == 1:
     # #     number_of_pegs = 3
@@ -133,8 +133,7 @@ if __name__ == '__main__':
     #
     # # the "points" in the FrogsAndToadsProblem are of type "Spaces",
     # # so the we need to instantiate Spaces for the start and ends points.
-    # start = Stacks.make_start(number_of_frogs_and_toads)
-    # goal = Stacks.make_goal(number_of_frogs_and_toads)
+
     #
     # # then a miracle occurs...
     # solution = a_star.find_path(frogs_and_toads, start, goal)
