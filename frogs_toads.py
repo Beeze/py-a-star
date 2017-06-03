@@ -40,7 +40,7 @@ class Spaces(object):
         return Spaces(space_list)
 
     def copy(self):
-        return Stacks( [ list(stack) for stack in self.stacks ])
+        return Spaces( [ list(spaces) for space in self.spaces ])
 
     def is_legal(self):
         for stack in self.stacks:
