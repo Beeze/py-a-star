@@ -1,18 +1,18 @@
 import a_star
 
-class Stacks(object):
+class Positions(object):
     def __init__(self, stacks):
-        if isinstance(stacks, Stacks):
-            self.stacks = stacks.stacks
+        if isinstance(positions, Positions):
+            self.positions = positions.positions
         else:
-            self.stacks = stacks
+            self.positions = positions
 
     @staticmethod
-    def make_start(number_of_pegs):
-        stack_list = [ [] for peg in xrange(number_of_pegs) ]
+    def make_start(number_of_frogs_and_toads):
+        stack_list = [ [] for frogs_toads in xrange(number_of_frogs_and_toads) ]
         if stack_list:
-            stack_list[0] = range(number_of_pegs, 0, -1)
-        return Stacks(stack_list)
+            stack_list[0] = range(number_of_frogs_and_toads, 0, -1)
+        return Positions(stack_list)
 
     @staticmethod
     def make_goal(number_of_pegs):
@@ -82,7 +82,7 @@ if __name__ == '__main__':
     #     number_of_pegs = 3
     # else:
     #     number_of_pegs = int(sys.args[1])
-    number_of_pegs = 5
+
     hanoi = HanoiProblem(number_of_pegs)
 
     # the "points" in the HanoiProblem are of type "Stacks",
