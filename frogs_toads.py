@@ -1,18 +1,27 @@
 import a_star
 
-class Positions(object):
-    def __init__(self, stacks):
-        if isinstance(positions, Positions):
-            self.positions = positions.positions
+class Spaces(object):
+    def __init__(self, spaces):
+        if isinstance(spaces, Spaces):
+            self.spaces = spaces.spaces
         else:
-            self.positions = positions
+            self.spaces = spaces
 
     @staticmethod
     def make_start(number_of_frogs_and_toads):
-        stack_list = [ [] for frogs_toads in xrange(number_of_frogs_and_toads) ]
-        if stack_list:
-            stack_list[0] = range(number_of_frogs_and_toads, 0, -1)
-        return Positions(stack_list)
+        # We have this number of frogs and toads, so we multiply the given number, and add one for the empty space.
+        number_of_spaces = number_of_frogs_and_toads*2
+        space_list = [ [] for space in xrange(number_of_spaces) ]
+        if space_list:
+            for idx, space in enumerate(space_list):
+                if (idx < (number_of_spaces/2)):
+                    space.append("F")
+                elif (idx == (number_of_spaces/2)):
+                    space.append("_")
+                else:
+                    space.append("T")
+
+        return Spaces(space_list)
 
     @staticmethod
     def make_goal(number_of_pegs):
