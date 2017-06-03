@@ -107,9 +107,10 @@ class FrogsAndToadsProblem(a_star.Problem):
         if lower_bound < 0:
             lower_bound = open_space_index - 1 if (open_space_index - 1 >= 0) else open_space_index
 
-        for i in xrange(number_of_frogs_and_toads):
+        for i in xrange(number_of_spaces):
             if (i == open_space_index):
                 continue
+                
             # Here, we think about potential states of the game
             # That would happen after a legal move.
             # For a move to be legal, you can't jump an animal of the same type
