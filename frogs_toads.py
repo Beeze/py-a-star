@@ -118,24 +118,21 @@ class FrogsAndToadsProblem(a_star.Problem):
         return score
 
 if __name__ == '__main__':
-    number_of_frogs_and_toads = 2
-    # frogs_and_toads = FrogsAndToadsProblem(number_of_frogs_and_toads)
-    start = Spaces.make_start(number_of_frogs_and_toads)
-    goal = Spaces.make_goal(number_of_frogs_and_toads)
-    print(start, goal)
     # import sys
     # # if len(sys.args) == 1:
     # #     number_of_pegs = 3
     # # else:
     # #     number_of_pegs = int(sys.args[1])
-    # number_of_frogs_and_toads = 2
-    # frogs_and_toads = FrogsAndToadsProblem(number_of_frogs_and_toads)
-    #
-    # # the "points" in the FrogsAndToadsProblem are of type "Spaces",
-    # # so the we need to instantiate Spaces for the start and ends points.
 
-    #
-    # # then a miracle occurs...
+    number_of_frogs_and_toads = 2
+    frogs_and_toads = FrogsAndToadsProblem(number_of_frogs_and_toads)
+
+    # the "points" in the FrogsAndToadsProblem are of type "Spaces",
+    # so the we need to instantiate Spaces for the start and ends points.
+    start = Spaces.make_start(number_of_frogs_and_toads)
+    goal = Spaces.make_goal(number_of_frogs_and_toads)
+
+    # then a miracle occurs...
     # solution = a_star.find_path(frogs_and_toads, start, goal)
     #
     # for position in solution:
