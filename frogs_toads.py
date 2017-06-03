@@ -73,19 +73,19 @@ class FrogsAndToadsProblem(a_star.Problem):
 
     def neighbor_nodes(self, spaces):
         neighbors = []
-
+        space_list = spaces.spaces
         #Determine the numbers of spaces allocated for this problem
         number_of_spaces = self.number_of_frogs_and_toads*2+1
 
         #Find the current open space
-        open_space_index = spaces.index("_")
+        open_space_index = space_list.index('_')
 
         #Get the upper and lower indices from which an animal would be able to move
         upper_bound = open_space_index + 2
 
         #Make sure upper bound is a valid index in the array
-        if upper_bound > len(spaces) - 1:
-            upper_bound = open_space_index + 1 if (open_space_index + 1 <= len(spaces) - 1) else open_space_index
+        if upper_bound > len(spaces.spaces) - 1:
+            upper_bound = open_space_index + 1 if (open_space_index + 1 <= len(space_list) - 1) else open_space_index
 
         lower_bound = open_space_index - 2
 
@@ -114,11 +114,11 @@ class FrogsAndToadsProblem(a_star.Problem):
 
                 # Check to see if we are able to move.
                 # If so, figure out how many spaces we can move.
-                if spaces[i] != spaces[i+offset] and spaces[i+offset] == "_":
+                if space_list[i] != space_list[i+offset] and space_list[i+offset] == "_":
                     neighbor = spaces.move(i, i+offset)
                     neighbors.append(neighbor)
 
-                elif spaces[i] != spaces[i+offset]:
+                elif space_list[i] != space_list[i+offset]:
                     # we know we are at most, 2 spaces away from the open space
                     # so we'll try to move our animal there
                     new_offset = 2 if offset > 0 else -2
@@ -148,7 +148,7 @@ if __name__ == '__main__':
     # # else:
     # #     number_of_pegs = int(sys.args[1])
 
-    number_of_frogs_and_toads = 2
+    number_of_frogs_and_toads = 6
     frogs_and_toads = FrogsAndToadsProblem(number_of_frogs_and_toads)
 
     # the "points" in the FrogsAndToadsProblem are of type "Spaces",
@@ -156,11 +156,8 @@ if __name__ == '__main__':
     start = Spaces.make_start(number_of_frogs_and_toads)
     goal = Spaces.make_goal(number_of_frogs_and_toads)
 
-    print(start.move(1, 2))
-
-
     # then a miracle occurs...
-    # solution = a_star.find_path(frogs_and_toads, start, goal)
-    #
-    # for position in solution:
-    #     print position
+    solution = a_star.find_path(frogs_and_toads, start, goal)
+
+    for position in solution:
+        print position
