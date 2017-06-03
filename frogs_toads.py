@@ -42,19 +42,8 @@ class Spaces(object):
     def copy(self):
         return Spaces( [ space for space in self.spaces ])
 
-    def is_legal(self):
-        for idx, space in enumerate(self.spaces):
-            #check to see if the next space is the same animal
+    # def is_legal(self):
 
-
-        # for space in self.spaces:
-        #     supporting_block = 999
-        #     for block in space:
-        #         if block >= supporting_block:
-        #             return False
-        #         else:
-        #             supporting_block = block
-        # return True
 
     def move(self, from_index, to_index):
         new_spaces = self.copy()
@@ -64,7 +53,7 @@ class Spaces(object):
         thing_at_space_we_are_moving_to = new_spaces.spaces[ to_index ]
 
         #Swap these items, and save them to our copy of the spaces list.
-        new_spaces[from_index], new_spaces[to_index] = thing_at_space_we_are_leaving, thing_at_space_we_are_moving_to
+        new_spaces.spaces[from_index], new_spaces.spaces[to_index] = thing_at_space_we_are_moving_to, thing_at_space_we_are_leaving
 
         return Spaces(new_spaces)
 
@@ -110,7 +99,7 @@ class FrogsAndToadsProblem(a_star.Problem):
         for i in xrange(number_of_spaces):
             if (i == open_space_index):
                 continue
-                
+
             # Here, we think about potential states of the game
             # That would happen after a legal move.
             # For a move to be legal, you can't jump an animal of the same type
@@ -172,6 +161,7 @@ if __name__ == '__main__':
     start = Spaces.make_start(number_of_frogs_and_toads)
     goal = Spaces.make_goal(number_of_frogs_and_toads)
 
+    print(start.move(1, 2))
 
 
     # then a miracle occurs...
