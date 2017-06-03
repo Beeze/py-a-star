@@ -41,8 +41,9 @@ class Spaces(object):
         return Spaces(space_list)
 
     def copy(self):
-        return Spaces( [ list(spaces) for space in self.spaces ])
+        return Spaces( [ space for space in self.spaces ])
 
+    #TODO: reimplement is_legal.
     def is_legal(self):
         for idx, space in enumerate(self.spaces):
             #check to see if the next space is the same animal
@@ -58,15 +59,21 @@ class Spaces(object):
         #             supporting_block = block
         # return True
 
+    #TODO: reimplement depth.
     def depth(self, index):
         return len(self.stacks[index])
 
     def move(self, from_index, to_index):
-        new_stacks = self.copy()
-        from_stack = new_stacks.stacks[ from_index ]
-        to_stack = new_stacks.stacks[ to_index ]
-        to_stack.append(from_stack.pop())
-        return Stacks(new_stacks)
+        new_spaces = self.copy()
+
+        #Get items from the indexes we are coming from, and moving to.
+        thing_at_space_we_are_leaving = new_spaces.spaces[ from_index ]
+        thing_at_space_we_are_moving_to = new_spaces.spaces[ to_index ]
+
+        #Swap these items, and save them to our copy of the spaces list.
+        new_spaces[from_index], new_spaces[to_index] = thing_at_space_we_are_leaving, thing_at_space_we_are_moving_to
+
+        return Spaces(new_spaces)
 
     def __unicode__(self):
         return 'Stacks(%s)' % repr(self.stacks)
