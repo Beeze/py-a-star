@@ -1,5 +1,4 @@
 import a_star
-from itertools import cycle
 import math
 
 class Spaces(object):
