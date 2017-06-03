@@ -105,14 +105,14 @@ class FrogsAndToadsProblem(a_star.Problem):
 
     def heuristic(self, position, goal):
         # number of frogs and toads moved past the first 3, or last 3 indices respectively.
-        number_of_spaces = len(self.spaces)
+        number_of_spaces = len(position.spaces)
         score = 0
-        for idx, space in enumerate(self.spaces):
-            if (idx <= math.floor(number_of_spaces/2) and space == "T"):
+        for idx, space in enumerate(position.spaces):
+            if (idx <= math.floor(number_of_spaces/2) and space == "F"):
                 score += 1
             elif (idx == math.floor(number_of_spaces/2) and space != "_"):
                 score += 1
-            elif (idx > math.floor(number_of_spaces/2) and space == "F"):
+            elif (idx > math.floor(number_of_spaces/2) and space == "T"):
                 score += 1
 
         return score
@@ -131,6 +131,8 @@ if __name__ == '__main__':
     # so the we need to instantiate Spaces for the start and ends points.
     start = Spaces.make_start(number_of_frogs_and_toads)
     goal = Spaces.make_goal(number_of_frogs_and_toads)
+
+    print(frogs_and_toads.heuristic(start, goal))
 
     # then a miracle occurs...
     # solution = a_star.find_path(frogs_and_toads, start, goal)
