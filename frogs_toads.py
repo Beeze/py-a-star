@@ -42,13 +42,11 @@ class Spaces(object):
     def copy(self):
         return Spaces( [ space for space in self.spaces ])
 
-    #TODO: reimplement is_legal.
     def is_legal(self):
         for idx, space in enumerate(self.spaces):
             #check to see if the next space is the same animal
-            if (space == self.spaces[(idx+1) % len(self.spaces)]) and (space == self.spaces[(idx-1) % len(self.spaces)]):
-                return False
-            return True
+
+
         # for space in self.spaces:
         #     supporting_block = 999
         #     for block in space:
@@ -130,7 +128,7 @@ if __name__ == '__main__':
     start = Spaces.make_start(number_of_frogs_and_toads)
     goal = Spaces.make_goal(number_of_frogs_and_toads)
 
-    print(frogs_and_toads.heuristic(start, goal))
+
 
     # then a miracle occurs...
     # solution = a_star.find_path(frogs_and_toads, start, goal)
