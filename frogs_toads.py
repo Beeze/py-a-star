@@ -87,15 +87,34 @@ class FrogsAndToadsProblem(a_star.Problem):
 
     def neighbor_nodes(self, spaces):
         neighbors = []
-        number_of_spaces = self.number_of_frogs_and_toads*2
+        number_of_spaces = self.number_of_frogs_and_toads*2+1
 
-        for i in xrange(self.number_of_frogs_and_toads):
-            if (i < math.floor(number_of_spaces/2)):
-                space_list.append("F")
-            elif (space_idx == math.floor(number_of_spaces/2)):
-                space_list.append("_")
-            else:
-                space_list.append("T")
+        open_space_index = spaces.index("_")
+
+        #Get the bounds, so we can figure out which indices we can try to move
+        upper_bound = open_space_index + 2
+
+        if upper_bound > len(spaces) - 1:
+            upper_bound = open_space_index + 1 if (open_space_index + 1 <= len(spaces) - 1) else open_space_index
+
+        lower_bound = open_space_index - 2
+
+        if lower_bound < 0:
+            lower_bound = open_space_index - 1 if (open_space_index - 1 >= 0) else open_space_index
+
+
+        for i in xrange(number_of_frogs_and_toads):
+            if (open_space - 2) <= i <= (open_space + 2):
+                indices_we_can_move_from.append(i)
+            # Here, we think about potential states of the game
+            # That would happen after a legal move.
+            # For a move to be legal, you can't jump an animal of the same type
+            # You can jump at most, one animal
+            # and you only can move to an empty space, signified by "_"
+
+
+
+
         return neighbors
 
     def heuristic(self, position, goal):
@@ -104,11 +123,11 @@ class FrogsAndToadsProblem(a_star.Problem):
         score = 0
 
         for idx, space in enumerate(position.spaces):
-            if (idx <= math.floor(number_of_spaces/2) and space == "F"):
+            if idx <= math.floor(number_of_spaces/2) and space == "F":
                 score += 1
-            elif (idx == math.floor(number_of_spaces/2) and space != "_"):
+            elif idx == math.floor(number_of_spaces/2) and space != "_":
                 score += 1
-            elif (idx > math.floor(number_of_spaces/2) and space == "T"):
+            elif idx > math.floor(number_of_spaces/2) and space == "T":
                 score += 1
 
         return score
