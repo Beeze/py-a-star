@@ -1,6 +1,7 @@
 import a_star
 import math
 
+# Spaces is an class which holds all the logic for altering each space in our puzzle.
 class Spaces(object):
     def __init__(self, spaces):
         if isinstance(spaces, Spaces):
