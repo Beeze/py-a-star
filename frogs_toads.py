@@ -24,11 +24,20 @@ class Spaces(object):
         return Spaces(space_list)
 
     @staticmethod
-    def make_goal(number_of_pegs):
-        stack_list = [ [] for peg in xrange(number_of_pegs) ]
-        if stack_list:
-            stack_list[-1] = range(number_of_pegs, 0, -1)
-        return Stacks(stack_list)
+    def make_goal(number_of_frogs_and_toads):
+        # We have this number of frogs and toads, so we multiply the given number, and add one for the empty space.
+        number_of_spaces = number_of_frogs_and_toads*2
+        space_list = [ [] for space in xrange(number_of_spaces) ]
+        if space_list:
+            for idx, space in enumerate(space_list):
+                if (idx < (number_of_spaces/2)):
+                    space.append("T")
+                elif (idx == (number_of_spaces/2)):
+                    space.append("_")
+                else:
+                    space.append("F")
+
+        return Spaces(space_list)
 
     def copy(self):
         return Stacks( [ list(stack) for stack in self.stacks ])
