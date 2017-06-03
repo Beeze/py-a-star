@@ -87,25 +87,29 @@ class FrogsAndToadsProblem(a_star.Problem):
 
     def neighbor_nodes(self, spaces):
         neighbors = []
+
+        #Determine the numbers of spaces allocated for this problem
         number_of_spaces = self.number_of_frogs_and_toads*2+1
 
+        #Find the current open space
         open_space_index = spaces.index("_")
 
-        #Get the bounds, so we can figure out which indices we can try to move
+        #Get the upper and lower indices from which an animal would be able to move
         upper_bound = open_space_index + 2
 
+        #Make sure upper bound is a valid index in the array
         if upper_bound > len(spaces) - 1:
             upper_bound = open_space_index + 1 if (open_space_index + 1 <= len(spaces) - 1) else open_space_index
 
         lower_bound = open_space_index - 2
 
+        #Make sure lower bound is a valid index in the array
         if lower_bound < 0:
             lower_bound = open_space_index - 1 if (open_space_index - 1 >= 0) else open_space_index
 
-
         for i in xrange(number_of_frogs_and_toads):
-            if (open_space - 2) <= i <= (open_space + 2):
-                indices_we_can_move_from.append(i)
+            if  lower_bound <= i <= upper_bound:
+                
             # Here, we think about potential states of the game
             # That would happen after a legal move.
             # For a move to be legal, you can't jump an animal of the same type
