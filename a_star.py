@@ -1,10 +1,12 @@
+# Problem is a class which allows us to define our problem statement.
+# All functions have default return values, but will use the corresponding function if we pass to it.
 class Problem(object):
 	def heuristic(self, point, goal):
 		return 0
-	
+
 	def neighbor_nodes(self, point):
 		return []
-	
+
 	def distance_between_neighbors(self, point, point2):
 		return 1
 
@@ -13,7 +15,7 @@ class Problem(object):
 
 	def on_open(self, point, f, g, h):
 		pass
-	
+
 	def on_close(self, point):
 		pass
 
@@ -49,7 +51,7 @@ def find_path(problem, start, goal):
 
 	# The came_from dict is a map from each point to one of it's neighbors.
 	# You can think of it as a vector field flowing back to the start. If you
-	# iteratively follow the 
+	# iteratively follow the
 	came_from = dict()
 
 	# the g-score is the currently best known cost to reach each point. It
@@ -119,10 +121,7 @@ def find_path(problem, start, goal):
 						h = problem.heuristic(neighbor, goal)
 						h_score[neighbor] = h
 						f = g + h
-						
+
 						problem.on_update(neighbor, f, g, h)
 
 	raise PathNotFound("no path from %s to %s." % (str(start), str(goal)))
-
-
-
