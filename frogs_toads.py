@@ -108,16 +108,45 @@ class FrogsAndToadsProblem(a_star.Problem):
             lower_bound = open_space_index - 1 if (open_space_index - 1 >= 0) else open_space_index
 
         for i in xrange(number_of_frogs_and_toads):
-            if  lower_bound <= i <= upper_bound:
-                
+            if (i == open_space_index):
+                continue
             # Here, we think about potential states of the game
             # That would happen after a legal move.
             # For a move to be legal, you can't jump an animal of the same type
             # You can jump at most, one animal
             # and you only can move to an empty space, signified by "_"
 
+            if lower_bound <= i <= upper_bound:
+                # We know this animal can potentially be moved.
 
+                #Figure out if we are current positioned before or after the open space.
+                if i < open_space_index:
+                    # Check to see if the next space is occupied by something different from i
+                    if spaces[i] != spaces[i+1] and spaces[i+1] == "_":
+                        neighbor = spaces.move(i, i+1)
+                        if neighbor.is_legal():
+                            neighbors.append(neighbor)
 
+                    elif spaces[i] != spaces[i+1]:
+                        # we know we are at most, 2 spaces away from the open space
+                        # so we'll try to move our animal there
+                        neighbor = spaces.move(i, i+2)
+                        if neighbor.is_legal():
+                            neighbors.append(neighbor)
+
+                elif i > open_space_index
+                    # Check to see if the next space is occupied by something different from i
+                    if spaces[i] != spaces[i-1] and spaces[i-1] == "_":
+                        neighbor = spaces.move(i, i-1)
+                        if neighbor.is_legal():
+                            neighbors.append(neighbor)
+
+                    elif spaces[i] != spaces[i-1]:
+                        # we know we are at most, 2 spaces away from the open space
+                        # so we'll try to move our animal there
+                        neighbor = spaces.move(i, i-2)
+                        if neighbor.is_legal():
+                            neighbors.append(neighbor)
 
         return neighbors
 
