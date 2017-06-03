@@ -118,36 +118,27 @@ class FrogsAndToadsProblem(a_star.Problem):
 
             if lower_bound <= i <= upper_bound:
                 # We know this animal can potentially be moved.
-
-                #Figure out if we are current positioned before or after the open space.
+                offset = 0
+                #Figure out if we are currently positioned before or after the open space.
                 if i < open_space_index:
-                    # Check to see if the next space is occupied by something different from i
-                    if spaces[i] != spaces[i+1] and spaces[i+1] == "_":
-                        neighbor = spaces.move(i, i+1)
-                        if neighbor.is_legal():
-                            neighbors.append(neighbor)
+                    offset = 1
+                else:
+                    offset = -1
 
-                    elif spaces[i] != spaces[i+1]:
-                        # we know we are at most, 2 spaces away from the open space
-                        # so we'll try to move our animal there
-                        neighbor = spaces.move(i, i+2)
-                        if neighbor.is_legal():
-                            neighbors.append(neighbor)
+                # Check to see if we are able to move.
+                # If so, figure out how many spaces we can move.
+                if spaces[i] != spaces[i+offset] and spaces[i+offset] == "_":
+                    neighbor = spaces.move(i, i+offset)
+                    if neighbor.is_legal():
+                        neighbors.append(neighbor)
 
-                elif i > open_space_index
-                    # Check to see if the next space is occupied by something different from i
-                    if spaces[i] != spaces[i-1] and spaces[i-1] == "_":
-                        neighbor = spaces.move(i, i-1)
-                        if neighbor.is_legal():
-                            neighbors.append(neighbor)
-
-                    elif spaces[i] != spaces[i-1]:
-                        # we know we are at most, 2 spaces away from the open space
-                        # so we'll try to move our animal there
-                        neighbor = spaces.move(i, i-2)
-                        if neighbor.is_legal():
-                            neighbors.append(neighbor)
-
+                elif spaces[i] != spaces[i+offset]:
+                    # we know we are at most, 2 spaces away from the open space
+                    # so we'll try to move our animal there
+                    new_offset = 2 if offset > 0 else -2
+                    neighbor = spaces.move(i, i+new_offset)
+                    if neighbor.is_legal():
+                        neighbors.append(neighbor)
         return neighbors
 
     def heuristic(self, position, goal):
