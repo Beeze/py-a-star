@@ -9,6 +9,7 @@ class Spaces(object):
         else:
             self.spaces = spaces
 
+    # Defines what the start state of our game is
     @staticmethod
     def make_start(number_of_frogs_and_toads):
         # We have this number of frogs and toads, so we multiply the given number
@@ -24,6 +25,7 @@ class Spaces(object):
 
         return Spaces(space_list)
 
+    # Defines what the goal state of our game is
     @staticmethod
     def make_goal(number_of_frogs_and_toads):
         # We have this number of frogs and toads, so we multiply the given number, and add one for the empty space.
@@ -39,9 +41,11 @@ class Spaces(object):
 
         return Spaces(space_list)
 
+    # Creates a copy of our classes spaces array for use in functions.
     def copy(self):
         return Spaces( [ space for space in self.spaces ])
 
+    # Glorified swap function that swaps two elements in our array of spaces.
     def move(self, from_index, to_index):
         new_spaces = self.copy()
 
@@ -54,23 +58,28 @@ class Spaces(object):
 
         return Spaces(new_spaces)
 
+    # used to print data to the console
     def __unicode__(self):
         return repr(self.spaces)
 
+    # used to print data to the console
     def __repr__(self):
         return repr(self.spaces)
 
+    # used for internal memory management
     def __hash__(self):
         return hash(repr(self))
 
+    # checks to see if two nodes are equal
     def __eq__(self, other):
         return repr(self) == repr(other)
 
-
+# This class builds the tree and sets up the hueristic function for our problem.
 class FrogsAndToadsProblem(a_star.Problem):
     def __init__(self, number_of_frogs_and_toads=3):
         self.number_of_frogs_and_toads = number_of_frogs_and_toads
 
+    # This is how we determine the neighbors of a given node.
     def neighbor_nodes(self, spaces):
         neighbors = []
         space_list = spaces.spaces
@@ -126,21 +135,25 @@ class FrogsAndToadsProblem(a_star.Problem):
                     neighbors.append(neighbor)
         return neighbors
 
+    # This is how we measure the effectiveness of each potential move to a neighbor.
+    # For ours, we'll far frogs and toads have moved towards their goal position.
+    # Two points if a toad/frog has moved pass the initial empty space
+    # One point if a toad/frog is on the initial empty space
     def heuristic(self, position, goal):
-        # number of frogs and toads moved past the first 3, or last 3 indices respectively.
         number_of_spaces = len(position.spaces)
         score = 0
 
         for idx, space in enumerate(position.spaces):
             if idx <= math.floor(number_of_spaces/2) and space == "F":
-                score += 1
+                score += 2
             elif idx == math.floor(number_of_spaces/2) and space != "_":
                 score += 1
             elif idx > math.floor(number_of_spaces/2) and space == "T":
-                score += 1
+                score += 2
 
         return score
 
+#__main__ runs when we do `python frogs_toads.py`
 if __name__ == '__main__':
     # import sys
     # # if len(sys.args) == 1:
@@ -148,7 +161,8 @@ if __name__ == '__main__':
     # # else:
     # #     number_of_pegs = int(sys.args[1])
 
-    number_of_frogs_and_toads = 6
+    # Works for any number of frogs and toads, although anything greater than 5 takes a bit to complete.
+    number_of_frogs_and_toads = 4
     frogs_and_toads = FrogsAndToadsProblem(number_of_frogs_and_toads)
 
     # the "points" in the FrogsAndToadsProblem are of type "Spaces",
@@ -156,7 +170,7 @@ if __name__ == '__main__':
     start = Spaces.make_start(number_of_frogs_and_toads)
     goal = Spaces.make_goal(number_of_frogs_and_toads)
 
-    # then a miracle occurs...
+    # Find the path using our a_star method.
     solution = a_star.find_path(frogs_and_toads, start, goal)
 
     for position in solution:
