@@ -11,15 +11,15 @@ class Spaces(object):
     def make_start(number_of_frogs_and_toads):
         # We have this number of frogs and toads, so we multiply the given number, and add one for the empty space.
         number_of_spaces = number_of_frogs_and_toads*2
-        space_list = [ [] for space in xrange(number_of_spaces) ]
+        space_list = []
         if space_list:
-            for idx, space in enumerate(space_list):
-                if (idx < (number_of_spaces/2)):
-                    space.append("F")
-                elif (idx == (number_of_spaces/2)):
-                    space.append("_")
+            for space_idx in xrange(number_of_spaces):
+                if (space_idx < (number_of_spaces/2)):
+                    space_list.append("F")
+                elif (space_idx == (number_of_spaces/2)):
+                    space_list.append("_")
                 else:
-                    space.append("T")
+                    space_list.append("T")
 
         return Spaces(space_list)
 
@@ -27,15 +27,15 @@ class Spaces(object):
     def make_goal(number_of_frogs_and_toads):
         # We have this number of frogs and toads, so we multiply the given number, and add one for the empty space.
         number_of_spaces = number_of_frogs_and_toads*2
-        space_list = [ [] for space in xrange(number_of_spaces) ]
+        space_list = []
         if space_list:
-            for idx, space in enumerate(space_list):
-                if (idx < (number_of_spaces/2)):
-                    space.append("T")
-                elif (idx == (number_of_spaces/2)):
-                    space.append("_")
+            for space_idx in xrange(number_of_spaces):
+                if (space_idx < (number_of_spaces/2)):
+                    space_list.append("T")
+                elif (space_idx == (number_of_spaces/2)):
+                    space_list.append("_")
                 else:
-                    space.append("F")
+                    space_list.append("F")
 
         return Spaces(space_list)
 
@@ -43,14 +43,17 @@ class Spaces(object):
         return Spaces( [ list(spaces) for space in self.spaces ])
 
     def is_legal(self):
-        for stack in self.stacks:
-            supporting_block = 999
-            for block in stack:
-                if block >= supporting_block:
-                    return False
-                else:
-                    supporting_block = block
-        return True
+        for space in self.spaces:
+            if
+
+        # for space in self.spaces:
+        #     supporting_block = 999
+        #     for block in space:
+        #         if block >= supporting_block:
+        #             return False
+        #         else:
+        #             supporting_block = block
+        # return True
 
     def depth(self, index):
         return len(self.stacks[index])
