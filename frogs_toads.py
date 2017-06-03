@@ -1,4 +1,5 @@
 import a_star
+from itertools import cycle
 
 class Spaces(object):
     def __init__(self, spaces):
@@ -43,9 +44,11 @@ class Spaces(object):
         return Spaces( [ list(spaces) for space in self.spaces ])
 
     def is_legal(self):
-        for space in self.spaces:
-            if
-
+        for idx, space in enumerate(self.spaces):
+            #check to see if the next space is the same animal
+            if (space == self.spaces[(idx+1) % len(self.spaces)]) and (space == self.spaces[(idx-1) % len(self.spaces)]):
+                return False
+            return True
         # for space in self.spaces:
         #     supporting_block = 999
         #     for block in space:
