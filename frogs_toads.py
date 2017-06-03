@@ -1,5 +1,6 @@
 import a_star
-from itertools import cycle
+from itertools import
+import math
 
 class Spaces(object):
     def __init__(self, spaces):
@@ -10,14 +11,14 @@ class Spaces(object):
 
     @staticmethod
     def make_start(number_of_frogs_and_toads):
-        # We have this number of frogs and toads, so we multiply the given number, and add one for the empty space.
+        # We have this number of frogs and toads, so we multiply the given number
         number_of_spaces = number_of_frogs_and_toads*2
         space_list = []
         if space_list:
             for space_idx in xrange(number_of_spaces):
-                if (space_idx < (number_of_spaces/2)):
+                if (space_idx < (math.floor(number_of_spaces/2))):
                     space_list.append("F")
-                elif (space_idx == (number_of_spaces/2)):
+                elif (space_idx == math.floor(number_of_spaces/2)):
                     space_list.append("_")
                 else:
                     space_list.append("T")
@@ -31,9 +32,9 @@ class Spaces(object):
         space_list = []
         if space_list:
             for space_idx in xrange(number_of_spaces):
-                if (space_idx < (number_of_spaces/2)):
+                if (space_idx < math.floor(number_of_spaces/2)):
                     space_list.append("T")
-                elif (space_idx == (number_of_spaces/2)):
+                elif (space_idx == math.floor(number_of_spaces/2)):
                     space_list.append("_")
                 else:
                     space_list.append("F")
@@ -75,11 +76,12 @@ class Spaces(object):
 
         return Spaces(new_spaces)
 
+    #TODO: decide if we need all these functions.
     def __unicode__(self):
-        return 'Stacks(%s)' % repr(self.stacks)
+        return 'Stacks(%s)' % repr(self.spaces)
 
     def __repr__(self):
-        return 'Stacks(%s)' % repr(self.stacks)
+        return 'Stacks(%s)' % repr(self.spaces)
 
     def __hash__(self):
         return hash(repr(self))
@@ -88,41 +90,54 @@ class Spaces(object):
         return repr(self) == repr(other)
 
 
-class HanoiProblem(a_star.Problem):
-    def __init__(self, pegs=3):
-        self.number_of_pegs = pegs
+class FrogsAndToadsProblem(a_star.Problem):
+    def __init__(self, frogs_and_toads=3):
+        self.number_of_frogs_and_toads = frogs_and_toads
 
-    def neighbor_nodes(self, stacks):
+    def neighbor_nodes(self, spaces):
         neighbors = []
-
-        for i in xrange(self.number_of_pegs):
-            for j in xrange(self.number_of_pegs):
-                if i != j and stacks.depth(i) > 0:
-                    neighbor = stacks.move(i, j)
-                    if neighbor.is_legal():
-                        neighbors.append(neighbor)
+        number_of_spaces = self.number_of_frogs_and_toads*2
+        for i in xrange(self.number_of_frogs_and_toads):
+            if (i < math.floor(number_of_spaces/2)):
+                space_list.append("F")
+            elif (space_idx == math.floor(number_of_spaces/2)):
+                space_list.append("_")
+            else:
+                space_list.append("T")
         return neighbors
 
     def heuristic(self, position, goal):
-        # number of blocks successfully moved to the last peg
-        return len(position.stacks[-1])
+        # number of frogs and toads moved past the first 3, or last 3 indices respectively.
+        number_of_spaces = len(self.spaces)
+        score = 0
+        for idx, space in enumerate(self.spaces):
+            if (idx <= math.floor(number_of_spaces/2) and space == "T"):
+                score++
+            elif (idx == math.floor(number_of_spaces/2) and space != "_"):
+                score++
+            elif (idx > math.floor(number_of_spaces/2) and space == "F"):
+                score++
+
+        return score
 
 if __name__ == '__main__':
-    import sys
-    # if len(sys.args) == 1:
-    #     number_of_pegs = 3
-    # else:
-    #     number_of_pegs = int(sys.args[1])
-
-    hanoi = HanoiProblem(number_of_pegs)
-
-    # the "points" in the HanoiProblem are of type "Stacks",
-    # so the we need to instantiate Stacks for the start and ends points.
-    start = Stacks.make_start(number_of_pegs)
-    goal = Stacks.make_goal(number_of_pegs)
-
-    # then a miracle occurs...
-    solution = a_star.find_path(hanoi, start, goal)
-
-    for position in solution:
-        print position
+    frogs_and_toads = FrogsAndToadsProblem(number_of_frogs_and_toads)
+    print(frogs_and_toads)
+    # import sys
+    # # if len(sys.args) == 1:
+    # #     number_of_pegs = 3
+    # # else:
+    # #     number_of_pegs = int(sys.args[1])
+    # number_of_frogs_and_toads = 2
+    # frogs_and_toads = FrogsAndToadsProblem(number_of_frogs_and_toads)
+    #
+    # # the "points" in the FrogsAndToadsProblem are of type "Spaces",
+    # # so the we need to instantiate Spaces for the start and ends points.
+    # start = Stacks.make_start(number_of_frogs_and_toads)
+    # goal = Stacks.make_goal(number_of_frogs_and_toads)
+    #
+    # # then a miracle occurs...
+    # solution = a_star.find_path(frogs_and_toads, start, goal)
+    #
+    # for position in solution:
+    #     print position

@@ -82,7 +82,7 @@ if __name__ == '__main__':
     #     number_of_pegs = 3
     # else:
     #     number_of_pegs = int(sys.args[1])
-    number_of_pegs = 5
+    number_of_pegs = 3
     hanoi = HanoiProblem(number_of_pegs)
 
     # the "points" in the HanoiProblem are of type "Stacks",
