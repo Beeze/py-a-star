@@ -42,9 +42,6 @@ class Spaces(object):
     def copy(self):
         return Spaces( [ space for space in self.spaces ])
 
-    # def is_legal(self):
-
-
     def move(self, from_index, to_index):
         new_spaces = self.copy()
 
@@ -119,16 +116,14 @@ class FrogsAndToadsProblem(a_star.Problem):
                 # If so, figure out how many spaces we can move.
                 if spaces[i] != spaces[i+offset] and spaces[i+offset] == "_":
                     neighbor = spaces.move(i, i+offset)
-                    if neighbor.is_legal():
-                        neighbors.append(neighbor)
+                    neighbors.append(neighbor)
 
                 elif spaces[i] != spaces[i+offset]:
                     # we know we are at most, 2 spaces away from the open space
                     # so we'll try to move our animal there
                     new_offset = 2 if offset > 0 else -2
                     neighbor = spaces.move(i, i+new_offset)
-                    if neighbor.is_legal():
-                        neighbors.append(neighbor)
+                    neighbors.append(neighbor)
         return neighbors
 
     def heuristic(self, position, goal):
