@@ -58,10 +58,6 @@ class Spaces(object):
         #             supporting_block = block
         # return True
 
-    #TODO: reimplement depth.
-    def depth(self, index):
-        return len(self.spaces[index])
-
     def move(self, from_index, to_index):
         new_spaces = self.copy()
 
@@ -88,12 +84,13 @@ class Spaces(object):
 
 
 class FrogsAndToadsProblem(a_star.Problem):
-    def __init__(self, frogs_and_toads=3):
-        self.number_of_frogs_and_toads = frogs_and_toads
+    def __init__(self, number_of_frogs_and_toads=3):
+        self.number_of_frogs_and_toads = number_of_frogs_and_toads
 
     def neighbor_nodes(self, spaces):
         neighbors = []
         number_of_spaces = self.number_of_frogs_and_toads*2
+
         for i in xrange(self.number_of_frogs_and_toads):
             if (i < math.floor(number_of_spaces/2)):
                 space_list.append("F")
@@ -107,6 +104,7 @@ class FrogsAndToadsProblem(a_star.Problem):
         # number of frogs and toads moved past the first 3, or last 3 indices respectively.
         number_of_spaces = len(position.spaces)
         score = 0
+
         for idx, space in enumerate(position.spaces):
             if (idx <= math.floor(number_of_spaces/2) and space == "F"):
                 score += 1
