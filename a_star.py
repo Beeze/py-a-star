@@ -31,45 +31,50 @@ def find_path(problem, start, goal):
 	Finds a path from point start to point goal using the A* algorithm.
 	'''
 
-	# set up a clean slate for this pass of the algorithm.
-	# The open set contains points at the perimeter: we know how to reach
-	# these points from the start, but have not yet explored all their neighbors.
+	'''
+	The open set contains points that we know how to reach from the start
+	but have not yet explored all their neighbors.
+	'''
 	open_set = set()
 
-	# the open_queue contains the same points as the open_set, but associates them
-	# with their f-score, and indeed is kept ordered by f-score. This lets
-	# us quickly choose the most promising points in the open set to explore next.
-	# It technically obviates the open_set but as an implementation detail it's
-	# easier to store them separately and use the set to check for membership
-	# and the queue to keep them sorted by f-score.
+	'''
+	the open_queue contains the same points as the open_set.
+	difference is we associates them with, and order them with their f-score.
+	'''
 	open_queue = list()
-
-	# The closed set contains points that we are finished with and won't visit
-	# again. We know how to reach them from start but have already explored
-	# all their neighbors.
+	'''
+	The closed set contains points that we won't visit again.
+	we won't visit them because we've already visited them, and their neighbors.
+	'''
 	closed_set = set()
 
-	# The came_from dict is a map from each point to one of it's neighbors.
-	# You can think of it as a vector field flowing back to the start. If you
-	# iteratively follow the
+	'''
+	The came_from dict is a map from each point to one of it's neighbors.
+	'''
 	came_from = dict()
 
-	# the g-score is the currently best known cost to reach each point. It
-	# is syncronized with the came_from vector field: if you followed it all
-	# the way back to the start, the cost would be exactly value found in g-score
-	# for that point. It isn't necessarily the best possible way to get to that
-	# point, just the best way we've discovered so far.
+	'''
+	the g-score is the currently best known cost to reach each point. It
+	is syncronized with the came_from dict: if you followed it all
+	the way back to the start, the cost would be exactly value found in g-score
+	for that point. It isn't necessarily the best possible way to get to that
+	point, just the best way we've discovered so far.
+	'''
 	g_score = dict()
 
-	# the h-score is the estimate for how far away from the goal this point
-	# is, as estimated by the problem's heuristic function.
+	'''
+	the h-score is the estimate for how far away from the goal this point is.
+	This is estimated using the problem's heuristic function.
+	'''
 	h_score = dict()
 
-	# f can be computed rather than stored.
+	'''
+	f can be computed rather than stored.
+	'''
 	def f_score(point):
 		return g_score[point] + h_score[point]
 
-	# we can kick off the algorithm by placing only the start point in the open set.
+	# add start to the set.
 	g_score[start] = 0
 	h = problem.heuristic(start, goal)
 	h_score[start] = h
@@ -77,7 +82,7 @@ def find_path(problem, start, goal):
 	open_queue.append( (f_score(start), start) )
 	problem.on_open(start, h, 0, h)
 
-	# keep searching until we find the goal, or until all possible pathes have been exhausted.
+	# keep searching until we find the goal, or until all possible paths have been exhausted.
 	while open_set:
 		open_queue.sort()
 		next_f, point = open_queue.pop(0)
@@ -97,8 +102,14 @@ def find_path(problem, start, goal):
 
 		for neighbor in problem.neighbor_nodes(point):
 			if not neighbor in closed_set:
+				# This is us determining the cost of the node.
+				# This uses both the accumulated distance and the admissable distance.
 				tentative_g_score = g_score[point] + problem.distance_between_neighbors(neighbor, point)
 
+				# Check to see if we've already added the neighbor to our set.
+				# if it isn't, we'll score it, and add it our queue.
+				# if it is, we'll check it's g_score, using findings from the other paths,
+				# and determine whether or not we need to update it's position in our queue.
 				if neighbor not in open_set:
 					# new territory to explore
 					came_from[neighbor] = point
